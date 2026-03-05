@@ -1,8 +1,16 @@
 node_modules/
 dist/
+
+# Secrets and environment
 .env
 .env.local
 *.env
+*.key
+*.pem
+*.p12
+*.pfx
+keystore/
+wallet.json
 
 # Build artifacts
 *.js.map
@@ -21,7 +29,8 @@ coverage/
 .DS_Store
 Thumbs.db
 
-# Editor
+# Editor / local IDE config (contains local machine paths)
+.claude/
 .vscode/settings.json
 .idea/
 *.swp
