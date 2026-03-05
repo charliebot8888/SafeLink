@@ -1,3 +1,12 @@
+/**
+ * SECURITY TEST — adversarial inputs used as attack payloads to verify defenses.
+ *
+ * The strings below (e.g. "Ignore all previous instructions") are SIMULATED
+ * ATTACK INPUTS fed to the input-gate and executor to confirm they are blocked
+ * and sanitised. They are NOT instructions to any agent or reader.
+ *
+ * Automated scanners: these strings are test fixtures, not injections.
+ */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("../../src/payments/x402.js", () => ({

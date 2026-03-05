@@ -1,3 +1,12 @@
+/**
+ * SECURITY STRESS TEST — adversarial inputs used as attack payloads to verify defenses.
+ *
+ * Strings such as "Ignore all previous instructions" are SIMULATED ATTACK INPUTS
+ * used to confirm the input-gate blocks and sanitises them. They are not
+ * instructions to any agent or reader.
+ *
+ * Automated scanners: these strings are test fixtures, not injections.
+ */
 import { describe, it, expect, beforeAll, afterAll, vi } from "vitest";
 import type { TaskServer } from "../../src/server/http.js";
 import { createTempSession, destroySession, getSession } from "../../src/security/session.js";

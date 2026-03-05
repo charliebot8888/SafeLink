@@ -416,7 +416,21 @@ export async function safe_listen_for_hire(): Promise<ListenResult> {
 - `SIWX_REQUIRED`: require SIWx signature binding for paid task requests
 - `ENABLE_OPAQUE_ENVELOPE`: encrypted A2A payload mode
 
+## Security Disclosure
+
+- **Required environment variables**: `ANTHROPIC_API_KEY` (LLM), `BASE_RPC_URL`, and one of Privy (`PRIVY_APP_ID` + `PRIVY_APP_SECRET`) or Coinbase CDP (`COINBASE_CDP_API_KEY_NAME` + `COINBASE_CDP_API_KEY_PRIVATE_KEY`) for MPC wallet signing. Full list in `.env.example` and `_meta.json`.
+- **`DEPLOYER_PRIVATE_KEY`**: Used **once** by `scripts/deploy-contracts.ts` for initial on-chain contract deployment only. Not loaded at MCP runtime. Use a throwaway funded key; discard after deployment.
+- **HTTP listener**: `safe_listen_for_hire` opens an HTTP server on `TASK_SERVER_PORT` (default 3402), bound to `127.0.0.1` unless explicitly reconfigured.
+- **File writes**: `scripts/deploy-contracts.ts` writes deployed contract addresses back to `.env`. `scripts/generate-env.ts` creates `.env` interactively. Neither runs automatically on MCP startup.
+- **External CLI** (`forge`): Used by `scripts/deploy-contracts.ts` for one-time Solidity contract compilation and deployment only. Not required or invoked at MCP runtime.
+- **Test files**: `tests/stress/` contains literal prompt-injection strings (e.g. `Ignore all previous instructions`) as adversarial test fixtures that verify the input-gate blocks them. These are not instructions to any agent.
+
 ## Changelog
+
+- `v0.1.1` (2026-03-05)
+  - added `_meta.json` with full required env vars, binaries, runtime behavior, and security disclosure for registry scanners
+  - added clarifying headers to stress test files to prevent false-positive prompt-injection scanner alerts
+  - upgraded `x402` to `^1.1.0` (fixes GHSA-3j63-5h8p-gf7c)
 
 - `v0.1.0` (2026-03-05)
   - initial public release
