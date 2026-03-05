@@ -1,0 +1,34 @@
+node_modules/
+dist/
+.env
+.env.local
+*.env
+
+# Build artifacts
+*.js.map
+*.d.ts.map
+
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+*.swp
+
+# Logs
+*.log
+logs/
+
+# Test artifacts
+.vitest/
