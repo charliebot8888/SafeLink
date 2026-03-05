@@ -1,5 +1,5 @@
-﻿{
-  "name": "safelink",
+{
+  "name": "safechain-agent",
   "version": "0.1.0",
   "description": "SafeLink: security-first OpenClaw skill for bidirectional agent hiring, escrow payments, MPC wallets, and policy-gated transactions",
   "type": "module",
@@ -7,8 +7,17 @@
   "bin": {
     "safelink": "dist/index.js"
   },
+  "files": [
+    "dist/",
+    "contracts/src/",
+    "SKILL.md",
+    "README.md",
+    "LICENSE",
+    ".env.example"
+  ],
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build",
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
     "test": "vitest run",
@@ -59,12 +68,16 @@
     "escrow",
     "mpc-wallet",
     "erc8004",
-    "a2a"
+    "a2a",
+    "safelink"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-handle/safelink"
+    "url": "https://github.com/charliebot8888/SafeLink"
+  },
+  "homepage": "https://github.com/charliebot8888/SafeLink#readme",
+  "bugs": {
+    "url": "https://github.com/charliebot8888/SafeLink/issues"
   }
 }
-

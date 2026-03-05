@@ -418,12 +418,13 @@ export async function safe_listen_for_hire(): Promise<ListenResult> {
 
 ## Changelog
 
-- `v0.2.0` (2026-03-05)
-  - enforced strict endpoint DNS/IP validation for outbound task delivery
-  - fixed provider-selection path so explicit wallet choice is honored
-  - added completion-state idempotency protection to block post-completion duplicates
-  - tightened inbound session and amount validation
-  - standardized proof hash handling for refunded flows
+- `v0.1.0` (2026-03-05)
+  - initial public release
+  - strict endpoint DNS/IP validation for outbound task delivery
+  - HMAC-signed inbound task auth with nonce replay lock and SIWx hook
+  - completion-state idempotency protection blocks post-completion duplicates
+  - `/.well-known/agent-card.json` HTTP endpoint
+  - 128 unit tests, zero TypeScript errors, CI coverage gates enforced
 
 ## Roadmap
 
