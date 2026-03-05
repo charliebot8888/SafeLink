@@ -2,7 +2,7 @@
 
 **Security-first MCP skill for bidirectional agent-to-agent hiring, escrowed USDC payments, and policy-gated on-chain execution.**
 
-> MIT license · Base Sepolia testnet · v0.1.3
+> MIT license · Base Sepolia testnet · v0.1.4
 
 ---
 

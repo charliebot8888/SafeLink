@@ -1,6 +1,6 @@
 {
   "name": "safechain-agent",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "SafeLink: security-first OpenClaw skill for bidirectional agent hiring, escrow payments, MPC wallets, and policy-gated transactions",
   "type": "module",
   "main": "dist/index.js",
