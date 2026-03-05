@@ -2,7 +2,7 @@
 
 **Security-first MCP skill for bidirectional agent-to-agent hiring, escrowed USDC payments, and policy-gated on-chain execution.**
 
-> MIT license · Base Sepolia testnet · v0.1.0
+> MIT license · Base Sepolia testnet · v0.1.1
 
 ---
 
@@ -117,7 +117,7 @@ Built for hostile environments: prompt injection attempts, payment replay attack
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/your-handle/safelink
+git clone https://github.com/charliebot8888/SafeLink
 cd safelink
 npm install
 ```
@@ -156,23 +156,59 @@ The task HTTP server starts automatically on `TASK_SERVER_PORT` (default `3402`)
 
 ---
 
-## Environment Variables
+## Required Credentials & Environment Variables
+
+> **Start with `npm run setup`** — the interactive wizard collects these and writes `.env` for you. All values are stored locally; nothing is sent to SafeLink servers.
+
+### Always required
+
+| Variable | Description |
+|---|---|
+| `BASE_RPC_URL` | Base RPC endpoint — default `https://sepolia.base.org` (testnet) |
+| `ERC8004_REGISTRY_ADDRESS` | Deployed registry contract — output of `npm run deploy:contracts` |
+| `SAFE_ESCROW_ADDRESS` | Deployed escrow contract — output of `npm run deploy:contracts` |
+| `X402_FACILITATOR_URL` | x402 facilitator — default `https://x402.org/facilitator` |
+
+### LLM provider (choose one)
+
+| Variable | When required |
+|---|---|
+| `ANTHROPIC_API_KEY` | `LLM_PROVIDER=anthropic` (default) |
+| `LLM_BASE_URL` + `LLM_API_KEY` + `LLM_MODEL` | `LLM_PROVIDER=openai_compatible` |
+
+### MPC wallet provider (choose one — private keys never enter app memory)
+
+| Variable | When required |
+|---|---|
+| `COINBASE_CDP_API_KEY_NAME` + `COINBASE_CDP_API_KEY_PRIVATE_KEY` | `WALLET_PROVIDER=coinbase` (Coinbase AgentKit) |
+| `PRIVY_APP_ID` + `PRIVY_APP_SECRET` | `WALLET_PROVIDER=privy` (Privy embedded wallet) |
+
+### One-time contract deployment only
+
+| Variable | Description |
+|---|---|
+| `DEPLOYER_PRIVATE_KEY` | Used **once** by `npm run deploy:contracts` to deploy on-chain contracts. **Not loaded at MCP runtime.** Use a throwaway funded testnet key; discard after deployment. |
+
+### Optional / recommended
 
 | Variable | Required | Description |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | Yes | Claude Haiku for task execution |
-| `PRIVY_APP_ID` + `PRIVY_APP_SECRET` | If using Privy | Embedded wallet |
-| `COINBASE_API_KEY_NAME` + `COINBASE_API_KEY_PRIVATE_KEY` | If using AgentKit | MPC wallet |
-| `BASE_RPC_URL` | Yes | `https://sepolia.base.org` (testnet) |
-| `ERC8004_REGISTRY_ADDRESS` | Yes | From `npm run deploy:contracts` |
-| `SAFE_ESCROW_ADDRESS` | Yes | From `npm run deploy:contracts` |
-| `REDIS_URL` | Recommended | Durable replay/idempotency store |
-| `TASK_AUTH_REQUIRED` | Recommended | `true` to require signed `/task` requests |
+| `REDIS_URL` | Recommended for multi-instance | Durable replay/idempotency store |
+| `TASK_AUTH_REQUIRED` | Recommended | `true` to require HMAC-signed `/task` requests |
 | `TASK_AUTH_SHARED_SECRET` | If above=true | ≥32 char high-entropy secret |
 | `SIWX_REQUIRED` | Optional | Require SIWx assertion on inbound tasks |
 | `SIWX_VERIFIER_URL` | If above=true | Your SIWx verifier endpoint |
-| `MAINNET_ENABLED` | Mainnet only | `true` to allow Base mainnet |
+| `TENDERLY_ACCESS_KEY` | Optional | EVM fork simulation (falls back to local Anvil) |
+| `AUTONOMYS_RPC_URL` | Optional | Memory checkpoints via Autonomys Auto SDK |
+| `BASESCAN_API_KEY` | Optional | Contract verification on BaseScan |
+| `MAINNET_ENABLED` | Mainnet only | `true` to allow Base mainnet (safety gate) |
 | `MAINNET_CONFIRM_TEXT` | Mainnet only | `I_UNDERSTAND_MAINNET_RISK` |
+
+### Runtime behavior disclosure
+
+- **HTTP listener**: `safe_listen_for_hire` opens an HTTP server on `TASK_SERVER_PORT` (default `3402`), bound to `127.0.0.1` unless reconfigured.
+- **File writes**: `npm run setup` writes `.env`. `npm run deploy:contracts` appends deployed contract addresses to `.env`. Neither runs automatically on MCP startup.
+- **External CLI**: `npm run deploy:contracts` invokes `forge` (Foundry) via shell for one-time Solidity compilation and deployment. `forge` is **not** required or invoked at MCP runtime.
 
 ---
 
